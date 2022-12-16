@@ -9,6 +9,7 @@ const taskSchema = new mongoose.Schema({
   items: Array,
   checkList: Array,
   notes: String,
+  createdAt: new Date(),
 });
 
 const TaskModel = mongoose.model("task", taskSchema);
