@@ -12,7 +12,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://to-do-react-mu-one.vercel.app/",
-    allowedHeaders: "Content-Type",
+    allowedHeaders: true,
+    preflightContinue: true,
   })
 );
 
