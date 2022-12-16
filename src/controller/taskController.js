@@ -1,4 +1,4 @@
-import TaskModel from "../model/taskModel";
+import TaskModel from "../model/taskModel.js";
 
 export async function createTask(req, res) {
   const newTask = req.body;
@@ -24,26 +24,24 @@ export async function createTask(req, res) {
 export async function readTasks(req, res) {
   let taskList = [];
 
-  await TaskModel.find()
-    .sort("createdAt", "desc")
-    .then((docs) => {
-      for (let doc of docs) {
-        const task = {
-          id: doc._id,
-          status: doc.status,
-          title: doc.title,
-          startDate: doc.startDate,
-          endDate: doc.endDate,
-          totalTime: doc.totalTime,
-          items: doc.items,
-          checkList: doc.checkList,
-          notes: doc.notes,
-        };
-        taskList.push(task);
-      }
-    });
+  await TaskModel.find().then((docs) => {
+    for (let doc of docs) {
+      const task = {
+        id: doc._id,
+        status: doc.status,
+        title: doc.title,
+        startDate: doc.startDate,
+        endDate: doc.endDate,
+        totalTime: doc.totalTime,
+        items: doc.items,
+        checkList: doc.checkList,
+        notes: doc.notes,
+      };
+      taskList.push(task);
+    }
+  });
 
-  return res.send(taskList);
+  return res.json(taskList);
 }
 
 export async function readTaskById(req, res) {
