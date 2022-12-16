@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-app.use("/tasks", taskRouter);
+app.use("/", cors(), taskRouter);
 
 try {
   mongoose.set("strictQuery", true);
