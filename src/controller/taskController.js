@@ -41,7 +41,7 @@ export async function readTasks(req, res) {
     }
   });
 
-  return res.json(taskList);
+  return res.send(taskList);
 }
 
 export async function readTaskById(req, res) {
