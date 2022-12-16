@@ -1,18 +1,17 @@
 import "dotenv/config";
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 import mongoose from "mongoose";
+import taskRouter from "./src/routes/taskRoute.js";
 
+const app = express();
 const CONNECT = process.env.MONGO_CONNECT;
 const CONNECTDB = process.env.MONGO_DB;
 
-import taskRouter from "./src/routes/taskRoute.js";
+app.use(express.json());
+app.use(cors());
 
-const api = express();
-api.use(express.json());
-// api.use(cors);
-
-api.use("/tasks", taskRouter);
+app.use("/tasks", taskRouter);
 
 try {
   mongoose.set("strictQuery", true);
@@ -21,6 +20,4 @@ try {
   console.log(err);
 }
 
-api.listen(process.env.PORT, () => {
-  console.log(`Server running on PORT: ${process.env.PORT}`);
-});
+app.listen(process.env.PORT);

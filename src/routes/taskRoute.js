@@ -20,8 +20,8 @@ taskRouter.put("/", updateTask);
 
 taskRouter.patch("/", updateTaskStatus);
 
-taskRouter.delete("/taskId", deleteTask);
+taskRouter.delete("/deleteTask", deleteTask);
 
-taskRouter.delete("/", deleteTasks);
+taskRouter.delete("/deleteAll", deleteTasks);
 
 export default taskRouter;
