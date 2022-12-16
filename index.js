@@ -9,15 +9,9 @@ const CONNECT = process.env.MONGO_CONNECT;
 const CONNECTDB = process.env.MONGO_DB;
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://to-do-react-mu-one.vercel.app/",
-    allowedHeaders: true,
-    preflightContinue: true,
-  })
-);
+app.use(cors());
 
-app.use("/", cors(), taskRouter);
+app.use("/", taskRouter);
 
 try {
   mongoose.set("strictQuery", true);
