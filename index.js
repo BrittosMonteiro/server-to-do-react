@@ -7,11 +7,12 @@ import taskRouter from "./src/routes/taskRoute.js";
 const app = express();
 const CONNECT = process.env.MONGO_CONNECT;
 const CONNECTDB = process.env.MONGO_DB;
+const PORT = process.env.PORT || 5050;
 
 app.use(express.json());
 app.use(cors());
 
-app.use("/", taskRouter);
+app.use("/tasks", taskRouter);
 
 try {
   mongoose.set("strictQuery", true);
@@ -20,4 +21,4 @@ try {
   console.log(err);
 }
 
-app.listen(process.env.PORT);
+app.listen(PORT);
