@@ -10,10 +10,24 @@ const CONNECTDB = process.env.MONGO_DB;
 const PORT = process.env.PORT || 5050;
 
 app.use(express.json());
-app.use(cors());
+
+const whitelist = [
+  "http://localhost:3000",
+  "https://to-do-react-mu-one.vercel.app",
+];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 
 app.get("/", async (req, res) => {
-  return res.send("Carregou");
+  return res.send("Backend funcionando");
 });
 
 app.use("/tasks", taskRouter);

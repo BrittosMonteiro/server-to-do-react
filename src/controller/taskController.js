@@ -37,7 +37,7 @@ export async function readTasks(req, res) {
         checkList: doc.checkList,
         notes: doc.notes,
       };
-      taskList.push(task);
+      taskList.unshift(task);
     }
   });
 
@@ -69,7 +69,15 @@ export async function updateTask(req, res) {
   return res.send(taskUpdate);
 }
 
-export async function updateTaskStatus(req, res) {}
+export async function updateTaskStatus(req, res) {
+  const { id, status } = req.body;
+
+  const newStatus = await TaskModel.findByIdAndUpdate(id, {
+    status: status,
+  });
+
+  return res.send(newStatus);
+}
 
 export async function deleteTask(req, res) {
   const { id } = req.body;
