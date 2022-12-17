@@ -12,6 +12,10 @@ const PORT = process.env.PORT || 5050;
 app.use(express.json());
 app.use(cors());
 
+app.get("/", async (req, res) => {
+  return res.send("Carregou");
+});
+
 app.use("/tasks", taskRouter);
 
 try {
