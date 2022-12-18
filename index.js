@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import taskRouter from "./src/routes/taskRoute.js";
+import loginRouter from "./src/routes/loginRoute.js";
 
 const app = express();
 const CONNECT = process.env.MONGO_CONNECT;
@@ -31,6 +32,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/tasks", taskRouter);
+app.use("/login", loginRouter);
 
 try {
   mongoose.set("strictQuery", true);
