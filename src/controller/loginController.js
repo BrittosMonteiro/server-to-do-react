@@ -10,34 +10,38 @@ export async function createAccount(req, res) {
     password: userData.password,
   });
 
-  const create = await userModel.save();
-
-  return res.send(create);
+  await userModel
+    .save()
+    .then((res) => res.toJSON())
+    .then(() => {
+      return res.send(userData);
+    })
+    .catch((err) => {
+      return res.send(err);
+    });
 }
 
 export async function login(req, res) {
   const userData = req.body;
-
-  let userResponse = {
-    id: "",
-    name: "",
-    email: "",
-    username: "",
-  };
 
   await UserModel.findOne()
     .where("username")
     .equals(userData.username)
     .where("password")
     .equals(userData.password)
-    .then((res) => {
-      (userResponse.id = res._id),
-        (userResponse.name = res.name),
-        (userResponse.email = res.email),
-        (userResponse.username = res.username);
+    .then((res) => res.toJSON())
+    .then((doc) => {
+      const user = {
+        id: doc._id,
+        name: doc.name,
+        email: doc.email,
+        username: doc.username,
+      };
+      return res.send(user);
+    })
+    .catch((err) => {
+      return res.send(err);
     });
-
-  return res.send(userResponse);
 }
 
 export async function updatePassword(req, res) {
