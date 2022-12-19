@@ -12,7 +12,7 @@ const taskRouter = express.Router();
 
 taskRouter.post("/", createTask);
 
-taskRouter.get("/", readTasks);
+taskRouter.get("/:idUser", readTasks);
 
 taskRouter.get("/taskId", readTaskById);
 

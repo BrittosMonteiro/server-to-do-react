@@ -14,6 +14,7 @@ export async function createTask(req, res) {
     items: newTask.items,
     checkList: newTask.checkList,
     notes: newTask.notes,
+    idUser: newTask.idUser,
   });
 
   const create = await taskModel.save();
@@ -22,24 +23,28 @@ export async function createTask(req, res) {
 }
 
 export async function readTasks(req, res) {
+  const { idUser } = req.params;
   let taskList = [];
 
-  await TaskModel.find().then((docs) => {
-    for (let doc of docs) {
-      const task = {
-        id: doc._id,
-        status: doc.status,
-        title: doc.title,
-        startDate: doc.startDate,
-        endDate: doc.endDate,
-        totalTime: doc.totalTime,
-        items: doc.items,
-        checkList: doc.checkList,
-        notes: doc.notes,
-      };
-      taskList.unshift(task);
-    }
-  });
+  await TaskModel.find()
+    .where("idUser")
+    .equals(idUser)
+    .then((docs) => {
+      for (let doc of docs) {
+        const task = {
+          id: doc._id,
+          status: doc.status,
+          title: doc.title,
+          startDate: doc.startDate,
+          endDate: doc.endDate,
+          totalTime: doc.totalTime,
+          items: doc.items,
+          checkList: doc.checkList,
+          notes: doc.notes,
+        };
+        taskList.unshift(task);
+      }
+    });
 
   return res.send(taskList);
 }
