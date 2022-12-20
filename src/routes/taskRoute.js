@@ -1,4 +1,5 @@
 import express from "express";
+import auth from "../controller/authController.js";
 import {
   createTask,
   deleteTask,
@@ -10,18 +11,18 @@ import {
 } from "../controller/taskController.js";
 const taskRouter = express.Router();
 
-taskRouter.post("/", createTask);
+taskRouter.post("/", auth, createTask);
 
-taskRouter.get("/:idUser", readTasks);
+taskRouter.get("/:idUser", auth, readTasks);
 
-taskRouter.get("/taskId", readTaskById);
+taskRouter.get("/taskId", auth, readTaskById);
 
-taskRouter.put("/", updateTask);
+taskRouter.put("/", auth, updateTask);
 
-taskRouter.patch("/", updateTaskStatus);
+taskRouter.patch("/", auth, updateTaskStatus);
 
-taskRouter.delete("/deleteTask", deleteTask);
+taskRouter.delete("/deleteTask", auth, deleteTask);
 
-taskRouter.delete("/deleteAll", deleteTasks);
+taskRouter.delete("/deleteAll", auth, deleteTasks);
 
 export default taskRouter;

@@ -1,5 +1,6 @@
 import UserModel from "../model/loginModel.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function createAccount(req, res) {
   const userData = req.body;
@@ -43,7 +44,12 @@ export async function login(req, res) {
       username: user.username,
     };
 
-    return res.status(200).send(response);
+    const token = jwt.sign(response, process.env.TOKEN_SECRET, {
+      expiresIn: 259200,
+    });
+
+    res.header("authorization-token", token);
+    return res.status(200).send({ ...response, token });
   } catch (err) {
     return res.status(400).send(err);
   }
