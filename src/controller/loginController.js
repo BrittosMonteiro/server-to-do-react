@@ -1,4 +1,5 @@
 import UserModel from "../model/loginModel.js";
+import bcrypt from "bcryptjs";
 
 export async function createAccount(req, res) {
   const userData = req.body;
@@ -7,7 +8,7 @@ export async function createAccount(req, res) {
     name: userData.name,
     email: userData.email,
     username: userData.username,
-    password: userData.password,
+    password: bcrypt.hashSync(userData.password, 14),
   });
 
   await userModel
@@ -24,24 +25,28 @@ export async function createAccount(req, res) {
 export async function login(req, res) {
   const userData = req.body;
 
-  await UserModel.findOne()
-    .where("username")
-    .equals(userData.username)
-    .where("password")
-    .equals(userData.password)
-    .then((res) => res.toJSON())
-    .then((doc) => {
-      const user = {
-        id: doc._id,
-        name: doc.name,
-        email: doc.email,
-        username: doc.username,
-      };
-      return res.send(user);
-    })
-    .catch((err) => {
-      return res.send(err);
-    });
+  try {
+    const user = await UserModel.findOne({ username: userData.username });
+    if (!user) {
+      return res.status(400).send("Usuário/senha incorretos");
+    }
+
+    const comparePass = bcrypt.compareSync(userData.password, user.password);
+    if (!comparePass) {
+      return res.status(400).send("Usuário/senha incorretos");
+    }
+
+    const response = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+    };
+
+    return res.status(200).send(response);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 }
 
 export async function updatePassword(req, res) {
