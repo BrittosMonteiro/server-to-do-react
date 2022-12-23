@@ -81,7 +81,19 @@ export async function updateTaskStatus(req, res) {
     status: status,
   });
 
-  return res.send(newStatus);
+  const task = {
+    id: newStatus._id,
+    status: newStatus.status,
+    title: newStatus.title,
+    startDate: newStatus.startDate,
+    endDate: newStatus.endDate,
+    totalTime: newStatus.totalTime,
+    items: newStatus.items,
+    checkList: newStatus.checkList,
+    notes: newStatus.notes,
+  };
+
+  return res.send(task);
 }
 
 export async function deleteTask(req, res) {
